@@ -1,0 +1,130 @@
+#include<iostream>
+using namespace std;
+struct node{
+    int value;
+    node* next;
+};
+node *head=NULL;
+void insertatbeginning(int data){
+    node *newnode =new node;
+    newnode->value= data;
+    newnode->next=head;
+    head=newnode;
+}
+void insertatend(int data){
+    node* newnode= new node;
+    newnode->value=data;
+    newnode->next=NULL;
+    node* cur=head;
+    while(cur->next!=NULL){
+         cur=cur->next;
+    }
+    cur->next=newnode;
+    newnode->next=NULL;
+}
+void insertatany(int data,int insertafter){
+    node* newnode= new node;
+    node*cur=head;
+    while(cur!=NULL){
+        cur=cur->next;
+        if(cur->value==insertafter){
+            break;
+        }
+    }
+    newnode->value=data;
+    newnode->next=cur->next;
+    cur->next=newnode;
+}
+void deleteAtBeginning(){
+    node* cur= head;
+    if(head==NULL)
+        return;
+    head=head->next;
+    free(cur);
+}
+void deleteatend(){
+    node *cur=head;
+    node *prev;
+
+    while(cur->next!=NULL){
+            prev=cur;
+            cur=cur->next;
+    }
+    if(cur==head)
+    {
+        head=0;
+        free(cur);
+    }
+    else{
+    prev->next=NULL;}
+    free(cur);
+}
+void deleteany(int data){
+
+    node *cur=head;
+    node *prev;
+    if(head->value==data){
+        head=head->next;
+        free(cur);
+        return;
+    }
+    if(head==NULL){
+        cout<<"nothing to delete"<<endl;
+    }
+    while(cur!=NULL){
+        prev=cur;
+        cur=cur->next;
+        if(cur==NULL){
+            cout<<"Not Found"<<endl;
+            return;
+        }
+        if(cur->value==data){
+            cout<<"Found"<<endl;
+            break;
+        }
+    }
+    prev->next=cur->next;
+    free(cur);
+}
+void display(){
+    node *temp=head;
+    while(temp!=NULL){
+    cout<<temp->value<<endl;
+    temp=temp->next;}
+}
+void reverselist(){
+    node *cur,*nextnode,*prev=NULL;
+    cur=nextnode=head;
+    while(nextnode!=NULL){
+        nextnode=nextnode->next;
+        cur->next=prev;
+        prev=cur;
+        cur=nextnode;
+    }
+    head=prev;
+
+}
+int main(){
+    insertatbeginning(10);
+    insertatbeginning(20);
+    insertatbeginning(30);
+    display();
+    cout<<endl;
+    reverselist();
+    display();
+    cout<<endl;
+    insertatend(40);
+    display();
+    cout<<endl;
+    insertatany(25,20);
+    display();
+    cout<<endl;
+    deleteAtBeginning();
+    display();
+    cout<<endl;
+    deleteatend();
+    display();
+    cout<<endl;
+    deleteany(25);
+    display();
+}
